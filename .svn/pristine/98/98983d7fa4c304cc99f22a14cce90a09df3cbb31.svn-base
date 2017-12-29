@@ -1,0 +1,38 @@
+package cn.et.food.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.et.food.entity.Result;
+import cn.et.food.service.StudentService;
+import cn.et.food.utils.PageTools;
+
+@Controller
+public class StudentController {
+	@Autowired
+	StudentService service;
+	@ResponseBody
+	@RequestMapping("/queryStudent")
+	public PageTools queryStudent(String sname,Integer page,Integer rows){
+		PageTools pt=service.queryStudent(sname,page,rows);
+		return pt;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/student/{sid}",method=RequestMethod.DELETE)
+	public Result deleteStudent(@PathVariable Integer sid,Integer page,Integer rows){
+		Result r=new Result();
+		r.setCode(1);
+		try {
+			service.deltetStudent(sid);
+		} catch (Exception e) {
+			r.setCode(0);
+			r.setMessage(e);
+		}
+		return r;
+	}
+}

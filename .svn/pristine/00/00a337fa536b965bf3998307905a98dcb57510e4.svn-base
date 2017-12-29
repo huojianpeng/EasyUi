@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>layout.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="themes/icon.css">
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.easyui.min.js"></script>
+	
+
+  </head>
+  
+  <body>
+    
+    
+    
+    <div class="easyui-layout" style="width:700px;height:350px;">
+
+		<div data-options="region:'west',split:true" title="West" style="width:25%;">
+			<ul id="tt" class="easyui-tree" data-options="url:'queryDept'">   </ul>  
+		</div>
+		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
+			
+		</div>
+	</div>
+    
+    
+  </body>
+</html>

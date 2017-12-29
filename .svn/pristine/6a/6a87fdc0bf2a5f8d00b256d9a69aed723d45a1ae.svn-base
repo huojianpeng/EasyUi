@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>crud.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="themes/icon.css">
+	<style type="text/css">
+		body{
+			font-size:14px;
+		}
+	</style>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.easyui.min.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <script type="text/javascript">
+    	function sexFormatter(value,row,index){
+    		if(value==1){
+    			return '男';
+    		}else{
+    			return '女';
+    		}
+    	}
+    	
+    	function queryForm(){
+    		var stuName=$("#stuNameId").textbox('getValue');
+    		//ajax=queryStudent?sname=stuName 的值
+    		//EasyUi所有的方法的调用
+    		//控件对象.控件名称('方法名','方法参数')
+    		$('#dg').datagrid('load',{
+				sname: stuName
+			});
+    	}
+    	
+    	$(function(){
+    		//设置data-options属性
+    		$("#dg").datagrid({
+    			rownumbers:true,
+    			toolbar:[
+	   			{
+					iconCls: 'icon-add',
+					text:'新增',
+					onClick:function(){
+					
+					}
+				},{
+					iconCls: 'icon-edit',
+					text:'修改'
+				},{
+					iconCls: 'icon-remove',
+					text:'删除',
+					onClick:function(){
+						//获取当前选中的行
+						var selectedRow=$("#dg").datagrid("getSelected");
+						if(selectedRow==null){
+							$.messager.alert('提示消息','请选择一行数据');
+							return;
+						}
+						//获取选中行的sid
+						var sid=selectedRow.sid;
+						$.ajax({
+							url:'student/'+sid,
+							method:'POST',
+							dataType:'json',
+							data:'_method=delete',
+							success:function(msg){
+								if(msg.code==1){
+									$.messager.alert('提示消息','删除成功');
+									queryForm();
+								}else{
+									$.messager.alert('错误消息',msg.message);
+									
+								}
+							}
+						});
+					}
+				  }
+				
+				]
+    		})
+    	})
+    	
+    	
+    </script>
+
+  </head>
+  
+  <body>
+  	学生姓名：<input id="stuNameId" class="easyui-textbox" type="text" name="stuName" data-options="required:true"></input>
+  	<a href="javascript:void(0)" class="easyui-linkbutton" style="width:50px" onclick="queryForm()">查询</a>
+  	<div style="height:5px"></div>
+  
+    <table id="dg" class="easyui-datagrid" title="学生信息" style="width:700px;height:250px"
+			data-options="singleSelect:false,collapsible:false,url:'queryStudent',method:'get',pagination:true">
+		<thead>
+			<tr>
+				<!-- {"sid":1,"sname":"张三2号","gid":1,"sex":1,"age":12,"address":"深圳福田"} -->
+				<th data-options="field:'sid',width:80">学生编号</th>
+				<th data-options="field:'sname',width:100">学生姓名</th>
+				<th data-options="field:'sex',width:80,align:'right',formatter:sexFormatter">性别</th>
+				<th data-options="field:'age',width:80,align:'right'">年龄</th>
+				<th data-options="field:'address',width:250">地址</th>
+			</tr>
+		</thead>
+	</table>
+  </body>
+</html>
